@@ -6,13 +6,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.nullpointerexception.restapi.controller.dto.PostDto;
+import pl.nullpointerexception.restapi.controller.dto.PostDtoMapper;
 import pl.nullpointerexception.restapi.model.Post;
 import pl.nullpointerexception.restapi.service.PostService;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static pl.nullpointerexception.restapi.controller.PostDtoMapper.mapToPostDtos;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +22,12 @@ public class PostController {
     public List<PostDto> getPosts(@RequestParam(required = false) int page){
         int PageNumber = page >= 0 ? page : 0;
         return PostDtoMapper.mapToPostDtos(postService.getPosts(PageNumber));
+    }
+
+    @GetMapping("/posts/comments")
+    public List<Post> getPostsWithComment(@RequestParam(required = false) int page){
+        int pageNumber = page >= 0 ? page : 0;
+        return postService.getPostsWithComments(pageNumber);
     }
 
     @GetMapping("/posts/{id}")
